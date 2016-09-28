@@ -215,6 +215,21 @@ public class PromiseTest {
 
 
     @Test
+    public void allWithNoPromises() {
+        final Object[] results = {null, null};
+        Promise.all(new ArrayList<Promise>()).then(new Promise.Runnable() {
+            @Override
+            public Object run(Object result) {
+                results[0] = STATE_FINISHED;
+                results[1] = true;
+                return null;
+            }
+        }).exec();
+        finish(results, true);
+    }
+
+
+    @Test
     public void promiseWithInnerThread() {
         final Object[] results = {null, null};
         new Promise(new Promise.Resolver() {

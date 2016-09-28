@@ -70,7 +70,7 @@ public class Promise {
     private final ArrayList<ChainEntry> mChain = new ArrayList<>();
     private int state = STATE_PENDING;
     private Object value = null;
-    private ArrayList<Promise> mChildren = new ArrayList<>();
+    private ArrayList<Promise> mChildren = null;
     private AllChainProgress mAllChainProgress = null;
 
 
@@ -133,7 +133,7 @@ public class Promise {
 
     // Execute the chain
     public void exec() {
-        if (mChildren.size() > 0) {
+        if (mChildren != null) {
             _resolveAll();
         } else {
             _resolve();
@@ -145,6 +145,14 @@ public class Promise {
         final AllChainProgress progress = new AllChainProgress(mChildren.size());
         final Object[] results = new Object[mChildren.size()];
         int count = 0;
+
+        // Handle if Promise.all() was called with no Promises
+        if (mChildren.size() == 0) {
+            Promise.this.value = results;
+            Promise.this.state = STATE_FULFILLED;
+            Promise.this._resolve();
+            return;
+        }
 
         for (final Promise promise : mChildren) {
             promise.mAllChainProgress = progress;
