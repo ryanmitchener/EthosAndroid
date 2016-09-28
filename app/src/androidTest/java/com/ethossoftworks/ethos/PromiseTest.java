@@ -16,6 +16,8 @@ import static org.junit.Assert.assertArrayEquals;
 @RunWith(AndroidJUnit4.class)
 public class PromiseTest {
     private static final int STATE_FINISHED = 0x00;
+    private static final Object lock = new Object();
+    private static int nestedAllTestResult = 0;
 
     private Promise createPromise(final boolean resolve, final Object value) {
         return new Promise(new Promise.Resolver() {
@@ -48,9 +50,9 @@ public class PromiseTest {
             }
         }
         if (expected instanceof Object[]) {
-            assertArrayEquals((Object[]) results[1], (Object[]) expected);
+            assertArrayEquals((Object[]) expected, (Object[]) results[1]);
         } else {
-            assertEquals(results[1], expected);
+            assertEquals(expected, results[1]);
         }
     }
 
@@ -237,5 +239,45 @@ public class PromiseTest {
             }
         }).exec();
         finish(results, true);
+    }
+
+
+    @Test
+    public void nestedAllTest() {
+        final Object[] results = {null, null};
+        nestedAllTestInnerPromise(1).then(new Promise.Runnable() {
+            public Object run(Object result) {
+                synchronized (lock) {
+                    nestedAllTestResult += 10;
+                }
+                results[0] = STATE_FINISHED;
+                results[1] = nestedAllTestResult;
+                return null;
+            }
+        }).exec();
+        finish(results, 59);
+    }
+
+
+    private Promise nestedAllTestInnerPromise(final int num) {
+        Promise promise = new Promise(new Promise.Resolver() {
+            public void run() {
+                synchronized (lock) {
+                    nestedAllTestResult += num;
+                }
+                resolve(num);
+            }
+        });
+        if (num <= 3) {
+            promise.then(new Promise.Runnable() {
+                public Object run(Object result) {
+                    ArrayList<Promise> promises = new ArrayList<>();
+                    promises.add(nestedAllTestInnerPromise(num + 1));
+                    promises.add(nestedAllTestInnerPromise(num + 1));
+                    return Promise.all(promises);
+                }
+            });
+        }
+        return promise;
     }
 }
