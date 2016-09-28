@@ -1,6 +1,9 @@
 package com.ethossoftworks.ethos;
 
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -187,14 +190,16 @@ public class Promise {
                 if (mAllChainProgress != null && mAllChainProgress.isRejected()) {
                     return null;
                 }
-                mResolver.run();
-                Promise.this.value = mResolver.value;
-                Promise.this.state = mResolver.state;
-                return null;
-            }
 
-            protected void onPostExecute(Void aVoid) {
-                _nextChainItem();
+                // Create the promise handler for the resolver
+                if (Looper.myLooper() == null) {
+                    Looper.prepare();
+                }
+                mResolver.handler = new PromiseHandler(Promise.this);
+
+                // Execute the resolver
+                mResolver.run();
+                return null;
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
@@ -245,6 +250,23 @@ public class Promise {
         }
 
         public Object run(Object result) { return null; }
+    }
+
+
+    // Handles messages from the resolver that are sent from resolve() and reject()
+    private static class PromiseHandler extends Handler {
+        Promise promise;
+
+        protected PromiseHandler(Promise promise) {
+            this.promise = promise;
+        }
+
+        public void handleMessage(Message msg) {
+            Resolver resolver = (Resolver) msg.obj;
+            promise.state = resolver.state;
+            promise.value = resolver.value;
+            promise._nextChainItem();
+        }
     }
 
 
@@ -318,17 +340,26 @@ public class Promise {
     public abstract static class Resolver {
         private int state = STATE_PENDING;
         private Object value = null;
+        private PromiseHandler handler;
 
         public abstract void run();
 
         public void resolve(Object value) {
             this.state = STATE_FULFILLED;
             this.value = value;
+            _dispatchMessage();
         }
 
         public void reject(Object reason) {
             this.state = STATE_REJECTED;
             this.value = reason;
+            _dispatchMessage();
+        }
+
+        private void _dispatchMessage() {
+            Message msg = handler.obtainMessage();
+            msg.obj = this;
+            handler.dispatchMessage(msg);
         }
     }
 }

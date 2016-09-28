@@ -210,4 +210,32 @@ public class PromiseTest {
         }).exec();
         finish(results, 5);
     }
+
+
+    @Test
+    public void promiseWithInnerThread() {
+        final Object[] results = {null, null};
+        new Promise(new Promise.Resolver() {
+            public void run() {
+                new Thread() {
+                    public void run() {
+                        try {
+                            Thread.sleep(500);
+                            resolve(true);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                            reject(false);
+                        }
+                    }
+                }.start();
+            }
+        }).then(new Promise.Runnable() {
+            public Object run(Object result) {
+                results[0] = STATE_FINISHED;
+                results[1] = true;
+                return null;
+            }
+        }).exec();
+        finish(results, true);
+    }
 }
