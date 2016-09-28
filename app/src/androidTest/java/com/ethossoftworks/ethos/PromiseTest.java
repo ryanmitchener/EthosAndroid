@@ -232,7 +232,7 @@ public class PromiseTest {
         }).then(new Promise.Runnable() {
             public Object run(Object result) {
                 results[0] = STATE_FINISHED;
-                results[1] = true;
+                results[1] = result;
                 return null;
             }
         }).exec();
