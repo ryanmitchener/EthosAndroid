@@ -243,6 +243,8 @@ public class Promise {
         public AllRunnable(int resultIndex) {
             this.resultIndex = resultIndex;
         }
+
+        public Object run(Object result) { return null; }
     }
 
 
@@ -308,7 +310,7 @@ public class Promise {
             this.id = id;
         }
 
-        public Object run(Object result){ return null; }
+        public abstract Object run(Object result);
     }
 
 
