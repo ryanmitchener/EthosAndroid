@@ -1,7 +1,10 @@
 package com.ethossoftworks.ethos;
 
+import android.os.Looper;
 import android.support.test.runner.AndroidJUnit4;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -18,6 +21,7 @@ public class PromiseTest {
     private static final int STATE_FINISHED = 0x00;
     private static final Object lock = new Object();
     private static int nestedAllTestResult = 0;
+
 
     private Promise createPromise(final boolean resolve, final Object value) {
         return new Promise(new Promise.Resolver() {
@@ -49,12 +53,15 @@ public class PromiseTest {
                 }
             }
         }
-        if (expected instanceof Object[]) {
+        if (expected == null) {
+            return;
+        } else if (expected instanceof Object[]) {
             assertArrayEquals((Object[]) expected, (Object[]) results[1]);
         } else {
             assertEquals(expected, results[1]);
         }
     }
+
 
 
     @Test
@@ -294,5 +301,45 @@ public class PromiseTest {
             });
         }
         return promise;
+    }
+
+
+    @Test
+    public void thenExecuteOnCorrectThread() {
+        if (Looper.myLooper() == null) {
+            Looper.prepare();
+        }
+        final Object[] results = {null, null};
+        final long id = Thread.currentThread().getId();
+        createPromise(true, true).then(new Promise.Runnable() {
+            public Object run(Object result) {
+                Looper.myLooper().quit();
+                results[0] = STATE_FINISHED;
+                results[1] = Thread.currentThread().getId();
+                return null;
+            }
+        }).exec(Looper.myLooper());
+        Looper.loop();
+        finish(results, id);
+    }
+
+    @Test
+    public void thenExecuteOnCorrectThread2() {
+        final Object[] results = {null, null};
+        new Thread() {
+            public void run() {
+                Looper.prepare();
+                final long id = Thread.currentThread().getId();
+                createPromise(true, true).then(new Promise.Runnable() {
+                    public Object run(Object result) {
+                        assertEquals(id, Thread.currentThread().getId());
+                        results[0] = STATE_FINISHED;
+                        return null;
+                    }
+                }).exec(Looper.myLooper());
+                Looper.loop();
+            }
+        }.start();
+        finish(results, null);
     }
 }

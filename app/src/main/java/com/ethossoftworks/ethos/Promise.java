@@ -23,9 +23,19 @@ import java.util.Arrays;
  * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * ----------------------------------------------------------------------------
  *
- * Promise class for executing tasks on a separate thread and waiting for a callback. Handling failures
+ * Notes:
+ * Promise class for executing tasks on a separate thread and waiting for a callback (either success or failure).
+ * All callbacks happen on the main thread by default.
  *
+ * You may specify a specific Looper to send messages on, but you must manage the Looper yourself.
+ * As Promise uses handlers, any thread that has an already prepared Looper will need to call
+ * Looper.loop() on the looper attached to the thread. Any thread that does not call Looper.loop()
+ * will not receive the .then() callbacks
+ * ----------------------------------------------------------------------------
+ *
+ * Example:
  * new Promise(new Promise.Resolver() {
  *     public void run() {
  *         // Do some work and then resolve or reject(false).
@@ -72,6 +82,7 @@ public class Promise {
     private Object value = null;
     private ArrayList<Promise> mChildren = null;
     private AllChainProgress mAllChainProgress = null;
+    private Looper mLooper;
 
 
     // Constructor
@@ -131,8 +142,15 @@ public class Promise {
     }
 
 
-    // Execute the chain
+    // Execute the promise
     public void exec() {
+        exec(Looper.getMainLooper());
+    }
+
+
+    // Execute the promise with a specified looper for then() and fail()
+    public void exec(Looper looper) {
+        mLooper = looper;
         if (mChildren != null) {
             _resolveAll();
         } else {
@@ -192,18 +210,15 @@ public class Promise {
             return;
         }
 
+        // Create the promise handler for the resolver
+        mResolver.handler = new PromiseHandler(Promise.this, mLooper);
+
         // Execute the resolver
         new AsyncTask<Void, Void, Void>() {
             protected Void doInBackground(Void... params) {
                 if (mAllChainProgress != null && mAllChainProgress.isRejected()) {
                     return null;
                 }
-
-                // Create the promise handler for the resolver
-                if (Looper.myLooper() == null) {
-                    Looper.prepare();
-                }
-                mResolver.handler = new PromiseHandler(Promise.this);
 
                 // Execute the resolver
                 mResolver.run();
@@ -265,7 +280,8 @@ public class Promise {
     private static class PromiseHandler extends Handler {
         Promise promise;
 
-        protected PromiseHandler(Promise promise) {
+        protected PromiseHandler(Promise promise, Looper looper) {
+            super(looper);
             this.promise = promise;
         }
 
@@ -367,7 +383,7 @@ public class Promise {
         private void _dispatchMessage() {
             Message msg = handler.obtainMessage();
             msg.obj = this;
-            handler.dispatchMessage(msg);
+            handler.sendMessage(msg);
         }
     }
 }
