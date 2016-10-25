@@ -9,7 +9,6 @@ import android.net.NetworkInfo;
 import android.util.TypedValue;
 
 public class Util {
-    // Checks Internet connection
     public static boolean checkNetworkConnection(Context context) {
         try {
             ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
