@@ -1,4 +1,4 @@
-package com.ethossoftworks.ethos;
+package com.ethossoftworks.ethos.Util;
 
 import android.os.AsyncTask;
 import android.os.Handler;

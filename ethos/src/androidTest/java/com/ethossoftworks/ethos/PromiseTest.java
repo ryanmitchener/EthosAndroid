@@ -3,8 +3,8 @@ package com.ethossoftworks.ethos;
 import android.os.Looper;
 import android.support.test.runner.AndroidJUnit4;
 
-import org.junit.After;
-import org.junit.Before;
+import com.ethossoftworks.ethos.Util.Promise;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
