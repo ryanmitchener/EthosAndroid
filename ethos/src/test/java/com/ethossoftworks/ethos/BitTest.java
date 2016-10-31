@@ -1,4 +1,4 @@
-package com.ethossoftworks.uitest;
+package com.ethossoftworks.ethos;
 
 
 import com.ethossoftworks.ethos.Util.Bit;

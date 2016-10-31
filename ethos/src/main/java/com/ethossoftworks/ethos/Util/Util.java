@@ -6,10 +6,11 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
 public class Util {
-    public static boolean checkNetworkConnection(Context context) {
+    public static boolean isNetworkConnected(Context context) {
         try {
             ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -27,6 +28,21 @@ public class Util {
 
     public static float dpToPx(int dp, Context context) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
+    }
+
+
+    public static float spToPx(int sp, Context context) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());
+    }
+
+
+    public static float pxToDp(int pixels, Context context) {
+        return (pixels / context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+    }
+
+
+    public static float pxToSp(int pixels, Context context) {
+        return (pixels / context.getResources().getDisplayMetrics().scaledDensity);
     }
 
 
