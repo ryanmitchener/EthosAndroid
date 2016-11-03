@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="gravity" format="integer">
+        <enum name="center" value="17" />
+        <enum name="center_horizontal" value="1" />
+        <enum name="center_vertical" value="16" />
+        <enum name="end" value="8388613" />
+        <enum name="start" value="8388611" />
+    </attr>
+    <attr name="textSize" format="dimension" />
+    <attr name="textColor" format="color" />
+
+    <declare-styleable name="CircleView">
+        <attr name="bgColor" format="color" />
+        <attr name="bgColorPressed" format="color" />
+        <attr name="outlineColor" format="color" />
+        <attr name="outlineWidth" format="dimension" />
+        <attr name="startAngle" format="float" />
+        <attr name="sweepAngle" format="float" />
+    </declare-styleable>
+
+    <declare-styleable name="WheelPicker">
+        <attr name="maxHeight" format="dimension" />
+        <attr name="extraText" format="string" />
+        <attr name="list" format="reference" />
+        <attr name="numDisplayItems" format="integer" />
+        <attr name="textColor" />
+        <attr name="textSize" />
+        <attr name="dividerColor" format="color" />
+        <attr name="dividerWidth" format="dimension" />
+        <attr name="textAlignment" format="integer">
+            <enum name="start" value="1" />
+            <enum name="center" value="2" />
+            <enum name="end" value="3" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="SlidingTextView">
+        <attr name="direction" format="integer">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
+        <attr name="textSize" />
+        <attr name="textColor" />
+        <attr name="gravity" />
+    </declare-styleable>
+</resources>
