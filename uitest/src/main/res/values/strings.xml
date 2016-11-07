@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">UI Test</string>
+    <string name="bullet_list">Bullet List</string>
 </resources>

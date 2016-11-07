@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="bullet_list_array">
+        <item>One</item>
+        <item>-Two</item>
+        <item>-Three</item>
+        <item>--Four a asdlalsdlaj alsdjalsd asdl alsdjflajsd lasd fla sdlf asld flasjdflkas ldfalsd las ldflasdlkfajslkdfj alsd flas dflkasdlkfalsdfla sd falsd la sdl falsdj flk adsf</item>
+        <item>---Five</item>
+        <item>-Six</item>
+    </string-array>
+</resources>

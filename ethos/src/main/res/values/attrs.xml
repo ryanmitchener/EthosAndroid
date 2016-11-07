@@ -9,6 +9,8 @@
     </attr>
     <attr name="textSize" format="dimension" />
     <attr name="textColor" format="color" />
+    <attr name="lineSpacingExtra" format="dimension" />
+    <attr name="list" format="reference" />
 
     <declare-styleable name="CircleView">
         <attr name="bgColor" format="color" />
@@ -22,10 +24,10 @@
     <declare-styleable name="WheelPicker">
         <attr name="maxHeight" format="dimension" />
         <attr name="extraText" format="string" />
-        <attr name="list" format="reference" />
         <attr name="numDisplayItems" format="integer" />
         <attr name="textColor" />
         <attr name="textSize" />
+        <attr name="list" />
         <attr name="dividerColor" format="color" />
         <attr name="dividerWidth" format="dimension" />
         <attr name="textAlignment" format="integer">
@@ -43,5 +45,15 @@
         <attr name="textSize" />
         <attr name="textColor" />
         <attr name="gravity" />
+    </declare-styleable>
+
+    <declare-styleable name="BulletListView">
+        <attr name="bulletSize" format="dimension" />
+        <attr name="bulletIndent" format="dimension" />
+        <attr name="textPadding" format="dimension" />
+        <attr name="list" />
+        <attr name="lineSpacingExtra" />
+        <attr name="textSize" />
+        <attr name="textColor" />
     </declare-styleable>
 </resources>
