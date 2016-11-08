@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Ethos</string>
+
+    <string name="cancel">Cancel</string>
+    <string name="fingerprint_description">Fingerprint sign in</string>
+    <string name="fingerprint_hint">Touch the sensor</string>
+    <string name="fingerprint_not_recognized">Fingerprint not recognized. Try again</string>
+    <string name="fingerprint_success">Fingerprint recognized</string>
+    <string name="device_does_not_support_fingerprint">This device does not support fingerprint authentication</string>
+    <string name="enable_fingerprint_permission">Fingerprint authentication permission not enabled</string>
+    <string name="register_fingerprint">Please register at least one fingerprint in Settings</string>
 </resources>

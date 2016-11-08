@@ -51,9 +51,9 @@
         <attr name="bulletSize" format="dimension" />
         <attr name="bulletIndent" format="dimension" />
         <attr name="textPadding" format="dimension" />
-        <attr name="list" />
         <attr name="lineSpacingExtra" />
         <attr name="textSize" />
         <attr name="textColor" />
+        <attr name="list" />
     </declare-styleable>
 </resources>

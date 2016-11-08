@@ -1,4 +1,5 @@
 <resources>
-    <string name="app_name">UI Test</string>
+    <string name="app_name">Ethos UI Test</string>
     <string name="bullet_list">Bullet List</string>
+    <string name="fingerprint_authentication">Fingerprint Authentication</string>
 </resources>
