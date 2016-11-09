@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        findViewById(R.id.test_activity_button).setOnClickListener(new ButtonClick(TestActivity.class));
     }
 
 
