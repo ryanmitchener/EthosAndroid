@@ -137,7 +137,7 @@ public class Promise {
         return new Promise(promises);
     }
 
-    public static Promise all(Promise[] promises) {
+    public static Promise all(Promise... promises) {
         return new Promise(new ArrayList<>(Arrays.asList(promises)));
     }
 

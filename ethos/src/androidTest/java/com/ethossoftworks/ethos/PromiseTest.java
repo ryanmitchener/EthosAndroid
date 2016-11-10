@@ -342,4 +342,18 @@ public class PromiseTest {
         }.start();
         finish(results, null);
     }
+
+
+    @Test
+    public void varargsTest() throws Exception {
+        final Object[] results = {null, null};
+        Promise.all(createPromise(true, 1), createPromise(true, 2)).then(new Promise.Runnable() {
+            public Object run(Object result) {
+                results[0] = STATE_FINISHED;
+                results[1] = result;
+                return null;
+            }
+        }).exec(Looper.myLooper());
+        finish(results, new Integer[] {1,2});
+    }
 }
