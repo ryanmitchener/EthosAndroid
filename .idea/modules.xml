@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ethos/ethos.iml" filepath="$PROJECT_DIR$/ethos/ethos.iml" />
       <module fileurl="file://$PROJECT_DIR$/ethos-android.iml" filepath="$PROJECT_DIR$/ethos-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ethos-compiler/ethos-compiler.iml" filepath="$PROJECT_DIR$/ethos-compiler/ethos-compiler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/statesaver/statesaver.iml" filepath="$PROJECT_DIR$/statesaver/statesaver.iml" />
       <module fileurl="file://$PROJECT_DIR$/uitest/uitest.iml" filepath="$PROJECT_DIR$/uitest/uitest.iml" />
     </modules>
   </component>

@@ -33,8 +33,14 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.0.0'
     testCompile 'junit:junit:4.12'
+
     compile 'org.greenrobot:eventbus:3.0.0'
+
     compile 'com.squareup.leakcanary:leakcanary-android:1.5'
+
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
+
+    compile project(':statesaver')
+    apt project(':ethos-compiler')
 }
