@@ -7,19 +7,17 @@ import android.widget.TextView;
 
 import com.ethossoftworks.ethos.EthosActivity;
 import com.ethossoftworks.ethos.EthosActivity.Layout;
-import com.ethossoftworks.ethos.Util.StateSaver.State;
+
+import butterknife.BindView;
 
 @Layout(R.layout.test_activity)
 public class TestActivity extends EthosActivity {
-    @State private int test = 0;
-    TextView textView;
+    @BindView(R.id.text) TextView textView;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.test_activity);
-        textView = (TextView) findViewById(R.id.text);
-        textView.setText("Testing: " + test++);
+        textView.setText("Hello");
     }
 }

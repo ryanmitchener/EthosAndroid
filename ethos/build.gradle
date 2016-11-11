@@ -1,11 +1,19 @@
 apply plugin: 'com.android.library'
+apply plugin: 'android-apt'
+
+// To use butterknife:
+// 1. Add classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8' to Project build.gradle
+// 2. Add "apply plugin: 'android-apt'" to module build.gradle
+// 3. Add Butterknife dependencies:
+//      apt 'com.github.frankiesardo:icepick-processor:2.3.6'
+//      compile 'com.jakewharton:butterknife:8.4.0'
 
 android {
-    compileSdkVersion 24
+    compileSdkVersion 25
     buildToolsVersion "24.0.0"
     defaultConfig {
         minSdkVersion 17
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -23,8 +31,9 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:appcompat-v7:25.0.0'
     testCompile 'junit:junit:4.12'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    compile 'com.jakewharton:butterknife:8.4.0'
 }

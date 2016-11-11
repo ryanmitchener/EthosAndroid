@@ -5,22 +5,25 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.ethossoftworks.ethos.Util.StateSaver;
+import com.ethossoftworks.ethos.StateSaver.StateSaver;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import butterknife.ButterKnife;
+
 
 public class EthosActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int layout = getLayoutAnnotation();
-        if (layout != -1) {
-            setContentView(layout);
-        }
+
+        setContentView(getLayoutAnnotation());
+
+        ButterKnife.bind(this);
+
         if (savedInstanceState != null) {
             StateSaver.restore(this);
         }
