@@ -32,7 +32,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile project(':ethos')
-    compile project(':statesaver')
     apt project(':ethos-compiler')
 
     apt 'com.jakewharton:butterknife-compiler:8.4.0'

@@ -1,4 +1,4 @@
-package com.ethossoftworks.statesaver;
+package com.ethossoftworks.ethos.StateSaver;
 
 //import android.app.Activity;
 

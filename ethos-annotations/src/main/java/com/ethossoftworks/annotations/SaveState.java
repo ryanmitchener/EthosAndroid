@@ -1,4 +1,4 @@
-package com.ethossoftworks.statesaver;
+package com.ethossoftworks.annotations;
 
 
 import java.lang.annotation.ElementType;

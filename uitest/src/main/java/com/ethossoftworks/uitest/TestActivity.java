@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.ethossoftworks.ethos.EthosActivity;
 import com.ethossoftworks.ethos.EthosActivity.Layout;
-import com.ethossoftworks.statesaver.SaveState;
+import com.ethossoftworks.annotations.SaveState;
 
 import butterknife.BindView;
 
@@ -21,5 +21,9 @@ public class TestActivity extends EthosActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         textView.setText("Hello 2");
+
+        if (savedInstanceState == null) {
+            testVar = 1;
+        }
     }
 }
