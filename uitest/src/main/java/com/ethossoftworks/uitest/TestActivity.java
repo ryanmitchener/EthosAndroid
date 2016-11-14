@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.TextView;
 
+import com.ethossoftworks.annotations.SaveState;
 import com.ethossoftworks.ethos.EthosActivity;
 import com.ethossoftworks.ethos.EthosActivity.Layout;
-import com.ethossoftworks.annotations.SaveState;
 
 import butterknife.BindView;
 
@@ -15,7 +15,6 @@ import butterknife.BindView;
 public class TestActivity extends EthosActivity {
     @BindView(R.id.text) TextView textView;
     @SaveState private int testVar;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
