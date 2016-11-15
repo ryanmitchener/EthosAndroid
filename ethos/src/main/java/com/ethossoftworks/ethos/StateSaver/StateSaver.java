@@ -2,7 +2,40 @@ package com.ethossoftworks.ethos.StateSaver;
 
 //import android.app.Activity;
 
+import java.util.HashMap;
+
+// TODO: Allow access to superclass private fields if possible
 public class StateSaver {
+    private static final String FILE_SUFFIX = "_SaveState";
+
+    private static HashMap<String, StateDataMap> sDataMap = new HashMap<>();
+
+    public static void save(Object target) {
+        try {
+            StateHandler stateHandler = (StateHandler) Class.forName(target.getClass().getCanonicalName() + FILE_SUFFIX).newInstance();
+            StateDataMap dataMap = new StateDataMap();
+            stateHandler.saveState(target, dataMap);
+            sDataMap.put(stateHandler.getClass().getCanonicalName(), dataMap);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void restore(Object target) {
+        try {
+            StateHandler stateHandler = (StateHandler) Class.forName(target.getClass().getCanonicalName() + FILE_SUFFIX).newInstance();
+            String canonicalName = stateHandler.getClass().getCanonicalName();
+            if (!sDataMap.containsKey(canonicalName)) {
+                return;
+            }
+            stateHandler.restoreState(target, sDataMap.get(canonicalName));
+            sDataMap.remove(canonicalName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 //    public static void save(Activity activity) {
 //        try {
 //            Field[] publicFields = activity.getClass().getFields();

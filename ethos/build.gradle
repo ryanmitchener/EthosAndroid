@@ -43,4 +43,8 @@ dependencies {
 
     compile project(':ethos-annotations')
     apt project(':ethos-compiler')
+
+
+    compile 'com.github.frankiesardo:icepick:2.3.6'
+    apt 'com.github.frankiesardo:icepick-processor:2.3.6'
 }
