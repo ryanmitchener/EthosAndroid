@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 
 
 public class EthosActivity extends AppCompatActivity {
-    @SaveState private int testVar2;
+    @SaveState private int testVarParent1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,7 +29,7 @@ public class EthosActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
 //            StateSaver.restore(this);
         } else {
-            testVar2 = 5;
+            testVarParent1 = 5;
         }
     }
 

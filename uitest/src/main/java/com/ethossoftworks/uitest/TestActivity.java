@@ -14,7 +14,9 @@ import butterknife.BindView;
 @Layout(R.layout.test_activity)
 public class TestActivity extends EthosActivity {
     @BindView(R.id.text) TextView textView;
-    @SaveState private int testVar;
+    @SaveState private int testVarLocal1;
+    @SaveState private int testVarLocal2;
+    @SaveState private int testVarLocal3;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -22,7 +24,7 @@ public class TestActivity extends EthosActivity {
         textView.setText("Hello 2");
 
         if (savedInstanceState == null) {
-            testVar = 1;
+            testVarLocal1 = 1;
         }
     }
 }
