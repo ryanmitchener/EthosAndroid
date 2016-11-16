@@ -26,6 +26,8 @@ public class EthosActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             StateSaver.restore(this);
+        } else {
+            createStateFields();
         }
     }
 
@@ -44,6 +46,9 @@ public class EthosActivity extends AppCompatActivity {
         }
         return -1;
     }
+
+
+    public void createStateFields() {}
 
 
     @Retention(RetentionPolicy.RUNTIME)

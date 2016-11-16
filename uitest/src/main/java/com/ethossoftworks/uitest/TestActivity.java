@@ -14,7 +14,6 @@ import butterknife.BindView;
 public class TestActivity extends EthosActivity {
     @BindView(R.id.text) TextView textView;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

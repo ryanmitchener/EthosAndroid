@@ -1,59 +1,33 @@
 package com.ethossoftworks.ethos.StateSaver;
 
-
-import android.app.Activity;
-
-import com.ethossoftworks.ethos.Util.DataStore;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
+import java.util.HashMap;
 
 public class StateSaver {
-    public static void save(Activity activity) {
+    private static final String FILE_SUFFIX = "_SaveState";
+    private static HashMap<String, StateDataMap> sDataMapContainer = new HashMap<>();
+
+    public static <T> void save(T target) {
         try {
-            Field[] publicFields = activity.getClass().getFields();
-            for (Field field : publicFields) {
-                Annotation annotation = field.getAnnotation(SaveState.class);
-                if (annotation != null) {
-                    DataStore.set(field.getName(), field.get(activity));
-                }
-            }
-
-
-            Field[] privateFields = activity.getClass().getDeclaredFields();
-            for (Field field : privateFields) {
-                Annotation annotation = field.getAnnotation(SaveState.class);
-                if (annotation != null) {
-                    field.setAccessible(true);
-                    DataStore.set(field.getName(), field.get(activity));
-                }
-            }
-        } catch (IllegalAccessException e) {
+            StateHandler<T> stateHandler = (StateHandler<T>) Class.forName(target.getClass().getCanonicalName() + FILE_SUFFIX).newInstance();
+            StateDataMap dataMap = new StateDataMap();
+            stateHandler.saveState(target, dataMap);
+            sDataMapContainer.put(stateHandler.getClass().getCanonicalName(), dataMap);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
 
-    public static void restore(Activity activity) {
+    public static <T> void restore(T target) {
         try {
-            Field[] publicFields = activity.getClass().getFields();
-            for (Field field : publicFields) {
-                Annotation annotation = field.getAnnotation(SaveState.class);
-                if (annotation != null) {
-                    field.set(activity, DataStore.retrieve(field.getName()));
-                }
+            StateHandler<T> stateHandler = (StateHandler<T>) Class.forName(target.getClass().getCanonicalName() + FILE_SUFFIX).newInstance();
+            String canonicalName = stateHandler.getClass().getCanonicalName();
+            if (!sDataMapContainer.containsKey(canonicalName)) {
+                return;
             }
-
-
-            Field[] privateFields = activity.getClass().getDeclaredFields();
-            for (Field field : privateFields) {
-                Annotation annotation = field.getAnnotation(SaveState.class);
-                if (annotation != null) {
-                    field.setAccessible(true);
-                    field.set(activity, DataStore.retrieve(field.getName()));
-                }
-            }
-        } catch (IllegalAccessException e) {
+            stateHandler.restoreState(target, sDataMapContainer.get(canonicalName));
+            sDataMapContainer.remove(canonicalName);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
