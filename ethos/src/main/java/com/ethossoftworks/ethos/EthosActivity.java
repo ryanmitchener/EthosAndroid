@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.ethossoftworks.annotations.SaveState;
 import com.ethossoftworks.ethos.StateSaver.StateSaver;
 
 import java.lang.annotation.ElementType;
@@ -17,8 +16,6 @@ import butterknife.ButterKnife;
 
 
 public class EthosActivity extends AppCompatActivity {
-    @SaveState public int testVarParent1;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +27,7 @@ public class EthosActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             StateSaver.restore(this);
         } else {
-            testVarParent1 = 5;
+            createStateFields();
         }
     }
 
@@ -49,6 +46,9 @@ public class EthosActivity extends AppCompatActivity {
         }
         return -1;
     }
+
+
+    public void createStateFields() {}
 
 
     @Retention(RetentionPolicy.RUNTIME)
