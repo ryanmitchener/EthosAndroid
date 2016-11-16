@@ -29,7 +29,6 @@ public class EthosActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             StateSaver.restore(this);
-//            Icepick.restoreInstanceState(this, savedInstanceState);
         } else {
             testVarParent1 = 5;
         }
@@ -40,7 +39,6 @@ public class EthosActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         StateSaver.save(this);
-//        Icepick.saveInstanceState(this, outState);
     }
 
 

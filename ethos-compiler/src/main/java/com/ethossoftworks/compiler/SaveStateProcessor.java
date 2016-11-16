@@ -8,15 +8,28 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeSpec;
 
+import java.lang.annotation.ElementType;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.Messager;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.ElementFilter;
+import javax.tools.Diagnostic;
+
+import static com.sun.org.apache.xalan.internal.xsltc.compiler.sym.error;
 
 
 /**
@@ -35,6 +48,8 @@ import javax.lang.model.element.TypeElement;
 @SupportedAnnotationTypes("com.ethossoftworks.annotations.SaveState")
 public class SaveStateProcessor extends AbstractProcessor {
     private final String FILE_SUFFIX = "_SaveState";
+    private final Set<String> ignoredClasses = new HashSet<>();
+    private final Set<String> annotatedClasses = new HashSet<>();
 
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
@@ -48,15 +63,20 @@ public class SaveStateProcessor extends AbstractProcessor {
             Element enclosingType = null;
 
             for (Element element : roundEnvironment.getElementsAnnotatedWith(SaveState.class)) {
+                if (!isAnnotatedFieldValid(element)) {
+                    return false;
+                }
                 if (enclosingType == null) {
                     enclosingType = element.getEnclosingElement();
+                    if (!isEnclosingClassValid(enclosingType)) {
+                        return false;
+                    }
 
-                    // TODO: Get public fields from superclass
-//                    TypeElement test = (TypeElement) (((DeclaredType) ((TypeElement) enclosingType).getSuperclass()).asElement());
-//                    test.getAnnotationsByType(SaveState.class);
-//                    String testName = test.getQualifiedName().toString();
-//                    System.out.println(test.getQualifiedName());
-////                    saveState.addStatement("private final ");
+                    String parent = getParent((TypeElement) enclosingType);
+                    if (parent != null) {
+                        saveState.addStatement("new " + parent + FILE_SUFFIX + "().saveState(target, dataMap)");
+                        restoreState.addStatement("new " + parent + FILE_SUFFIX + "().restoreState(target, dataMap)");
+                    }
                 }
                 addMethodStatements(saveState, restoreState, element.getSimpleName().toString());
             }
@@ -66,7 +86,7 @@ public class SaveStateProcessor extends AbstractProcessor {
             restoreState.addParameter(ClassName.get((TypeElement) enclosingType), "target");
             restoreState.addParameter(ClassName.get("com.ethossoftworks.ethos.StateSaver", "StateDataMap"), "dataMap");
 
-            TypeSpec typeSpec = TypeSpec.classBuilder(getClassName(enclosingType) + FILE_SUFFIX)
+            TypeSpec typeSpec = TypeSpec.classBuilder(enclosingType.getSimpleName().toString() + FILE_SUFFIX)
                     .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                     .addSuperinterface(ParameterizedTypeName.get(ClassName.get("com.ethossoftworks.ethos.StateSaver", "StateHandler"), ClassName.get((TypeElement) enclosingType)))
                     .addMethod(saveState.build())
@@ -83,14 +103,70 @@ public class SaveStateProcessor extends AbstractProcessor {
     }
 
 
-    private void addMethodStatements(MethodSpec.Builder saveState, MethodSpec.Builder restoreState, String fieldName) {
-        saveState.addStatement("dataMap.put($S, target.$L)", fieldName, fieldName);
-        restoreState.addStatement("target.$L = dataMap.removeWithType($S)", fieldName, fieldName);
+    private String getParent(TypeElement classType) {
+        TypeMirror type;
+        while (true) {
+            type = classType.getSuperclass();
+            if (type.getKind() == TypeKind.NONE) {
+                return null;
+            }
+            classType = (TypeElement) ((DeclaredType) type).asElement();
+            String className = classType.toString();
+
+            if (ignoredClasses.contains(className)) {
+                continue;
+            }
+
+            if (annotatedClasses.contains(className)) {
+                return className;
+            }
+
+            if (isClassAnnotated(classType)) {
+                annotatedClasses.add(className);
+                return className;
+            }
+
+            ignoredClasses.add(className);
+        }
     }
 
 
-    private String getClassName(Element enclosingType) {
-        return enclosingType.getSimpleName().toString();
+    private boolean isAnnotatedFieldValid(Element element) {
+        boolean isInvalid = element.getModifiers().contains(Modifier.PRIVATE) ||
+            element.getModifiers().contains(Modifier.STATIC) ||
+            element.getModifiers().contains(Modifier.FINAL);
+        if (isInvalid) {
+            processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "StateSaverError: Field '" + element.getSimpleName() + "' in '" + ((TypeElement) element.getEnclosingElement()).getQualifiedName() + "' must not be private, static or final");
+        }
+        return !isInvalid;
+    }
+
+
+    private boolean isEnclosingClassValid(Element enclosingClass) {
+        boolean isInvalid = enclosingClass.getModifiers().contains(Modifier.PRIVATE);
+        if (isInvalid) {
+            processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "StateSaverError: Enclosing class '" + ((TypeElement) enclosingClass).getQualifiedName() + "' must not be private");
+        }
+        return !isInvalid;
+    }
+
+
+    private boolean isClassAnnotated(TypeElement classType) {
+        List<VariableElement> fields = ElementFilter.fieldsIn(classType.getEnclosedElements());
+        for (Element e : fields) {
+            for (AnnotationMirror am : e.getAnnotationMirrors()) {
+                if (am.getAnnotationType().toString().equals(SaveState.class.getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+    private void addMethodStatements(MethodSpec.Builder saveState, MethodSpec.Builder restoreState, String fieldName) {
+        saveState.addStatement("dataMap.put($S, target.$L)", fieldName, fieldName);
+        restoreState.addStatement("target.$L = dataMap.removeWithType($S)", fieldName, fieldName);
     }
 
 

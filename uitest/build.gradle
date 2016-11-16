@@ -33,7 +33,4 @@ dependencies {
     apt project(':ethos-compiler')
 
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
-
-    compile 'com.github.frankiesardo:icepick:2.3.6'
-    apt 'com.github.frankiesardo:icepick-processor:2.3.6'
 }
