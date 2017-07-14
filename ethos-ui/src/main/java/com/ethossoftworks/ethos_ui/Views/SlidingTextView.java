@@ -1,4 +1,4 @@
-package com.ethossoftworks.ethos.Views;
+package com.ethossoftworks.ethos_ui.Views;
 
 
 import android.animation.Animator;
@@ -14,7 +14,7 @@ import android.view.ViewPropertyAnimator;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.TextView;
 
-import com.ethossoftworks.ethos.R;
+import com.ethossoftworks.ethos_ui.R;
 
 // TODO: Implement save instance state
 // TODO: Allow styleable gravity to work properly

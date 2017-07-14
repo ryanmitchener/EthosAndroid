@@ -1,4 +1,4 @@
-package com.ethossoftworks.ethos.Views;
+package com.ethossoftworks.ethos_ui.Views;
 
 
 import android.content.Context;
@@ -15,14 +15,14 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.ethossoftworks.ethos.R;
-import com.ethossoftworks.ethos.Util.Util;
+import com.ethossoftworks.ethos.Util;
+import com.ethossoftworks.ethos_ui.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.ethossoftworks.ethos.R.id.circle;
+import static com.ethossoftworks.ethos_ui.R.id.circle;
 
 // TODO: Add setSelectable for child clicking
 // TODO: Add ordered and unordered list options

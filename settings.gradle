@@ -1,1 +1,1 @@
-include ':ethos', ':uitest', ':ethos-compiler', ':ethos-annotations'
+include ':ethos', ':uitest', ':ethos-compiler', ':ethos-annotations', ':ethos-ui'

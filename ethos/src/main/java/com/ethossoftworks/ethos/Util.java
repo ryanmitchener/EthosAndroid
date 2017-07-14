@@ -1,4 +1,4 @@
-package com.ethossoftworks.ethos.Util;
+package com.ethossoftworks.ethos;
 
 
 import android.app.Activity;

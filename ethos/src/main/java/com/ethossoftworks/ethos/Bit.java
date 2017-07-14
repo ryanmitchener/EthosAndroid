@@ -1,4 +1,4 @@
-package com.ethossoftworks.ethos.Util;
+package com.ethossoftworks.ethos;
 
 
 public class Bit {

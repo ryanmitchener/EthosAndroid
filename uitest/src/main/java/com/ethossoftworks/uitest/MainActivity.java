@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
-import com.ethossoftworks.ethos.Dialogs.FingerprintAuthenticationDialog;
+import com.ethossoftworks.ethos_ui.Dialogs.FingerprintAuthenticationDialog;
 
 
 public class MainActivity extends AppCompatActivity {

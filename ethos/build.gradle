@@ -1,13 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'android-apt'
-
-// To use Ethos:
-// 1. Add classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8' to Project build.gradle
-// 2. Add "apply plugin: 'android-apt'" to module build.gradle
-// 3. Add dependencies dependencies:
-//    compile project(':ethos')
-//    apt project(':ethos-compiler')
-//    apt 'com.jakewharton:butterknife-compiler:8.4.0'
 
 android {
     compileSdkVersion 25
@@ -32,16 +23,6 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.0.1'
     testCompile 'junit:junit:4.12'
-
-    compile 'org.greenrobot:eventbus:3.0.0'
-
     compile 'com.squareup.leakcanary:leakcanary-android:1.5'
-
-    compile 'com.jakewharton:butterknife:8.4.0'
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
-
-    compile project(':ethos-annotations')
-    apt project(':ethos-compiler')
 }

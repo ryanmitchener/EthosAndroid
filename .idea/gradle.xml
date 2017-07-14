@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/ethos" />
             <option value="$PROJECT_DIR$/ethos-annotations" />
             <option value="$PROJECT_DIR$/ethos-compiler" />
+            <option value="$PROJECT_DIR$/ethos-ui" />
             <option value="$PROJECT_DIR$/uitest" />
           </set>
         </option>

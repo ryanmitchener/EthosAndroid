@@ -1,4 +1,4 @@
-package com.ethossoftworks.ethos.Views;
+package com.ethossoftworks.ethos_ui.Views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Scroller;
 
-import com.ethossoftworks.ethos.R;
+import com.ethossoftworks.ethos_ui.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;

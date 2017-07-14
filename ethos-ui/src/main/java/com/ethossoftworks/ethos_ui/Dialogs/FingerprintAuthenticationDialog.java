@@ -1,4 +1,4 @@
-package com.ethossoftworks.ethos.Dialogs;
+package com.ethossoftworks.ethos_ui.Dialogs;
 
 
 import android.Manifest;
@@ -24,7 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ethossoftworks.ethos.R;
+import com.ethossoftworks.ethos_ui.R;
 
 import java.security.KeyStore;
 
